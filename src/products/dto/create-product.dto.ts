@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 
 export class CreateProductDto {
@@ -12,6 +12,7 @@ export class CreateProductDto {
 
     @IsString()
     @IsNotEmpty()
+    @IsOptional()
     userId: string;
 
     //All fields are required
