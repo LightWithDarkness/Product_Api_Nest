@@ -1,11 +1,11 @@
 import { Body, Controller, Post, UsePipes, ValidationPipe, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 import { SignupUserDto } from './dto/signup-user.dto';
 import { SigninUserDto } from './dto/signin-user.dto';
 
-@Controller('user')
-export class UserController {
-    constructor(private readonly authService: UserService) { }
+@Controller('auth')
+export class AuthController {
+    constructor(private readonly authService: AuthService) { }
 
     @Post('signup')
     @UsePipes(new ValidationPipe({ whitelist: true }))
