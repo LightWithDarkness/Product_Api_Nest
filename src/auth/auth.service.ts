@@ -5,12 +5,13 @@ import { User } from './schemas/user.schema';
 import { SignupUserDto } from './dto/signup-user.dto';
 import { SigninUserDto } from './dto/signin-user.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
     private readonly logger = new Logger(AuthService.name);
 
-    constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {}
+    constructor(private jwtService:JwtService ,@InjectModel(User.name) private readonly userModel: Model<User>) {}
 
     async signUp(user: SignupUserDto) {
         try {
@@ -32,7 +33,7 @@ export class AuthService {
         }
     }
 
-    async signIn(user: SigninUserDto) {
+    async signIn(user: SigninUserDto): Promise<{accessToken: string}> {
         try {
             const { email, password } = user;
             const existingUser = await this.userModel.findOne({ email });
@@ -46,8 +47,12 @@ export class AuthService {
                 throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
             }
 
-            const { password: _, ...userWithoutPassword } = existingUser.toObject();
-            return { message: 'User signed in successfully', user: userWithoutPassword };
+            // const { password: _, ...userWithoutPassword } = existingUser.toObject();
+            // return { message: 'User signed in successfully', user: userWithoutPassword };
+
+            console.log('existingUser',existingUser);
+            const payload = {sub: existingUser._id, email: existingUser.email};
+            return {accessToken:  await this.jwtService.signAsync(payload)};
         } catch (error) {
             this.handleError(error, 'signIn');
         }
