@@ -50,7 +50,7 @@ export class AuthService {
             // const { password: _, ...userWithoutPassword } = existingUser.toObject();
             // return { message: 'User signed in successfully', user: userWithoutPassword };
 
-            console.log('existingUser',existingUser);
+            // console.log('existingUser',existingUser);
             const payload = {sub: existingUser._id, email: existingUser.email};
             return {accessToken:  await this.jwtService.signAsync(payload)};
         } catch (error) {

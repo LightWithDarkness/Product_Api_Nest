@@ -10,10 +10,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     price: number;
 
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    userId: string;
+    // userId: string; from the 
 
     //All fields are required
 }
